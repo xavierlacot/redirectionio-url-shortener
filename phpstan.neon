@@ -1,0 +1,16 @@
+parameters:
+    level: 8
+    paths:
+        - application/src
+        - application/public
+    scanDirectories:
+        - application/vendor
+    tmpDir: tools/phpstan/var/application
+    inferPrivatePropertyTypeFromConstructor: true
+
+    ignoreErrors:
+        -
+            identifier: missingType.generics
+
+    symfony:
+        containerXmlPath: 'application/var/cache/dev/App_KernelDevDebugContainer.xml'

@@ -1,0 +1,49 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('col-span-full')) }) -%}
+    {%- set widget_attr = widget_attr|default({})|merge({attr: { class: 'block w-full'}}) -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = widget_attr|merge({attr: {'aria-describedby': id ~"_help"}}) -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        <div class="mt-2">
+            {{- form_widget(form, widget_attr) -}}
+        </div>
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block widget_attributes -%}
+    {% set base_class = ' rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm/6' %}
+
+    {% if attr.no_border is not defined or not attr.no_border %}
+        {% set base_class = base_class ~ ' outline outline-1 -outline-offset-1 outline-gray-30 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600' %}
+    {% endif %}
+
+    {% if errors|length > 0 -%}
+        {% set base_class = base_class ~ ' outline-red-300' %}
+    {% endif %}
+
+    {%- set attr = attr|merge({ class: attr.class|default('') ~ base_class}) -%}
+
+    {{- parent() -}}
+{%- endblock widget_attributes -%}
+
+{%- block form_label -%}
+    {%- set label_attr = label_attr|merge({ class: label_attr.class|default(label_class|default('block text-sm/6 font-medium text-gray-900')) }) -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_help -%}
+    {%- set help_attr = help_attr|merge({ class: help_attr.class|default(help_class|default('text-xs text-gray-500')) }) -%}
+    {{- parent() -}}
+{%- endblock form_help -%}
+
+{%- block form_errors -%}
+    {%- for error in errors -%}
+        <p class="{{ error_item_class|default('mt-2 text-sm text-red-600') }}">{{ error.message }}</p>
+    {%- endfor -%}
+{%- endblock form_errors -%}
