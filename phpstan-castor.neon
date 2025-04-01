@@ -1,5 +1,4 @@
 parameters:
-    tmpDir: tools/phpstan/var/castor
     level: 6
     paths:
         - castor.php
@@ -14,14 +13,12 @@ parameters:
                 project_name: string,
                 root_domain: string,
                 extra_domains: string[],
-                project_directory: string,
                 php_version: string,
                 docker_compose_files: string[],
                 macos: bool,
                 power_shell: bool,
                 user_id: int,
                 root_dir: string,
-                env: string,
                 composer_cache_dir: string,
             }
         '''

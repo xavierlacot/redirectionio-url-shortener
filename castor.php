@@ -51,6 +51,7 @@ function start(): void
     cache_clear();
     install();
     front_build();
+    cache_clear();
     // workers_start();
 
     notify('The stack is now up and running.');

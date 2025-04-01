@@ -1,10 +1,10 @@
 {% use 'form_div_layout.html.twig' %}
 
 {%- block form_row -%}
-    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('col-span-full')) }) -%}
-    {%- set widget_attr = widget_attr|default({})|merge({attr: { class: 'block w-full'}}) -%}
+    {%- set row_attr = row_attr|merge({class: row_attr.class|default(row_class|default('col-span-full'))}) -%}
+    {%- set widget_attr = widget_attr|default({})|merge({attr: {class: 'block w-full'}}) -%}
     {%- if help is not empty -%}
-        {%- set widget_attr = widget_attr|merge({attr: {'aria-describedby': id ~"_help"}}) -%}
+        {%- set widget_attr = widget_attr|merge({attr: {'aria-describedby': id ~ '_help'}}) -%}
     {%- endif -%}
     <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_label(form) -}}
@@ -27,18 +27,18 @@
         {% set base_class = base_class ~ ' outline-red-300' %}
     {% endif %}
 
-    {%- set attr = attr|merge({ class: attr.class|default('') ~ base_class}) -%}
+    {%- set attr = attr|merge({class: attr.class|default('') ~ base_class}) -%}
 
     {{- parent() -}}
 {%- endblock widget_attributes -%}
 
 {%- block form_label -%}
-    {%- set label_attr = label_attr|merge({ class: label_attr.class|default(label_class|default('block text-sm/6 font-medium text-gray-900')) }) -%}
+    {%- set label_attr = label_attr|merge({class: label_attr.class|default(label_class|default('block text-sm/6 font-medium text-gray-900'))}) -%}
     {{- parent() -}}
 {%- endblock form_label -%}
 
 {%- block form_help -%}
-    {%- set help_attr = help_attr|merge({ class: help_attr.class|default(help_class|default('text-xs text-gray-500')) }) -%}
+    {%- set help_attr = help_attr|merge({class: help_attr.class|default(help_class|default('text-xs text-gray-500'))}) -%}
     {{- parent() -}}
 {%- endblock form_help -%}
 

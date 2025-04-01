@@ -17,7 +17,7 @@ function all(): int
     install();
     $cs = cs();
     $phpstan = phpstan();
-    $rector = t();
+    $rector = rector();
     $twigCsFixer = twig_cs_fixer();
     // $phpunit = phpunit();
 

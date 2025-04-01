@@ -2,14 +2,11 @@
 
 namespace App\Form;
 
-use App\Validator\ShortCode;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Url;
 
 class ShortUrlType extends AbstractType
 {
@@ -18,17 +15,13 @@ class ShortUrlType extends AbstractType
         $builder
             ->add('url', UrlType::class, [
                 'label' => 'URL',
-                'help' => 'Please enter a valid URL (starting with http://).',
+                'help' => 'Please enter a valid URL (starting with <code>http://</code> or <code>https://</code>).',
                 'attr' => [
                     'placeholder' => 'Enter the URL to shorten',
                     'class' => 'form-control',
                 ],
                 'required' => true,
                 'default_protocol' => 'https',
-                'constraints' => [
-                    new NotBlank(),
-                    new Url(requireTld: true),
-                ],
             ])
             ->add('shortCode', null, [
                 'label' => 'Short Code',
@@ -38,9 +31,6 @@ class ShortUrlType extends AbstractType
                     'class' => 'form-control',
                 ],
                 'required' => false,
-                'constraints' => [
-                    new ShortCode(),
-                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Shorten this URL',

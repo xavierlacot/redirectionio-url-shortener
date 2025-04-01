@@ -1,4 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
+parameters:
+    default_api_url: https://api.redirection.io/
+
 framework:
     secret: '%env(APP_SECRET)%'
 
@@ -7,6 +10,16 @@ framework:
 
     #esi: true
     #fragments: true
+    http_client:
+        scoped_clients:
+            redirectionio.client:
+                base_uri: '%env(string:default:default_api_url:REDIRECTION_IO_API_URL)%'
+                headers:
+                    Accept: application/json
+                    Authorization: 'Bearer %env(REDIRECTION_IO_API_KEY)%'
+                    Content-Type: application/json
+                    User-Agent: 'url-shortener-demo'
+                max_duration: 5
 
 when@test:
     framework:

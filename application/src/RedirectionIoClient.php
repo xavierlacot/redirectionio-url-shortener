@@ -7,16 +7,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RedirectionIoClient
 {
-    private const string API_URL = 'https://api.redirection.io/';
-
     public function __construct(
+        #[Autowire('@redirectionio.client')]
         private readonly HttpClientInterface $client,
 
         #[Autowire('%env(REDIRECTION_IO_PROJECT_ID)%')]
         private readonly string $projectId,
-
-        #[Autowire('%env(REDIRECTION_IO_API_KEY)%')]
-        private readonly string $apiKey,
     ) {
     }
 
@@ -39,16 +35,6 @@ class RedirectionIoClient
     }
 
     /**
-     * @return array<string, string>
-     */
-    private function getDefaultHeaders(): array
-    {
-        return [
-            'Authorization' => 'Bearer ' . $this->apiKey,
-        ];
-    }
-
-    /**
      * @return array<string, mixed>
      */
     private function createDraft(string $url, ?string $shortCode, ?string $description): array
@@ -68,8 +54,7 @@ class RedirectionIoClient
             $payload['description'] = $description;
         }
 
-        $draft = $this->client->request('POST', $this->getApiUrl('redirections'), [
-            'headers' => $this->getDefaultHeaders(),
+        $draft = $this->client->request('POST', 'redirections', [
             'json' => $payload,
         ]);
 
@@ -78,8 +63,7 @@ class RedirectionIoClient
 
     private function publish(): void
     {
-        $this->client->request('POST', $this->getApiUrl(\sprintf('projects/%s/publish', $this->projectId)), [
-            'headers' => $this->getDefaultHeaders(),
+        $this->client->request('POST', \sprintf('projects/%s/publish', $this->projectId), [
             'json' => [
                 'projectId' => $this->projectId,
             ],
@@ -91,10 +75,9 @@ class RedirectionIoClient
      */
     private function getDrafts(string $shortCode): array
     {
-        $drafts = $this->client->request('GET', $this->getApiUrl('drafts?projectId=' . $this->projectId), [
-            'headers' => $this->getDefaultHeaders(),
+        $drafts = $this->client->request('GET', 'drafts', [
             'query' => [
-                'project_id' => $this->projectId,
+                'projectId' => $this->projectId,
                 'triggerUrl' => '/' . $shortCode,
             ],
         ]);
@@ -107,10 +90,9 @@ class RedirectionIoClient
      */
     private function getPublishedRules(string $shortCode): array
     {
-        $publishedRules = $this->client->request('GET', $this->getApiUrl('rules?projectId=' . $this->projectId), [
-            'headers' => $this->getDefaultHeaders(),
+        $publishedRules = $this->client->request('GET', 'rules', [
             'query' => [
-                'project_id' => $this->projectId,
+                'projectId' => $this->projectId,
                 'triggerUrl' => '/' . $shortCode,
             ],
         ]);
@@ -120,11 +102,6 @@ class RedirectionIoClient
 
     private function getRandomShortCode(): string
     {
-        return hash('crc32', uniqid());
-    }
-
-    private function getApiUrl(string $path): string
-    {
-        return self::API_URL . $path;
+        return bin2hex(random_bytes(5));
     }
 }
