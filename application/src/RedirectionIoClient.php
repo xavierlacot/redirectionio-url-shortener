@@ -3,12 +3,13 @@
 namespace App;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RedirectionIoClient
 {
     public function __construct(
-        #[Autowire('@redirectionio.client')]
+        #[Target('redirectionio.client')]
         private readonly HttpClientInterface $client,
 
         #[Autowire('%env(REDIRECTION_IO_PROJECT_ID)%')]
